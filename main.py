@@ -21,8 +21,7 @@ def getModel():
 class CNN:
     model = getModel()
 
-
-sample_image_path = Global.images[0]
+sample_image_path = os.path.join(Global.dir_path,"magie_hall.jpg") #Global.images[0]
 print(sample_image_path)
 
 from keras.preprocessing import image
@@ -34,9 +33,6 @@ img_tensor = np.expand_dims(img_tensor, axis=0)
 img_tensor /= 255.
 
 import matplotlib.pyplot as plt
-
-#plt.imshow(img_tensor[0])
-#plt.show()
 
 from keras import models
 
@@ -51,7 +47,7 @@ import matplotlib.pyplot as plt
 for x in range(64):
     plt.matshow(first_layer_activation[0, :, :,x], cmap='viridis')
 
-    save_path = os.path.join(Global.dir_path,ntpath.basename(sample_image_path))
+    save_path = os.path.join(Global.dir_path,str(x) + ntpath.basename(sample_image_path))
     print(save_path)
     plt.savefig(save_path)
 
