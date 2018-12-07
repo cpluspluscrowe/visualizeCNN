@@ -1,6 +1,9 @@
 from keras.models import load_model
+import ntpath
+import os 
 
 class Global:
+    dir_path = "/Users/ccrowe/Documents/gitrepos/visualizeCNN"#os.path.dirname(os.path.realpath(__file__))
     sentiment_model_path = "/Users/ccrowe/Documents/Thesis/facebook_api/Notebooks/Image_CNN/getCommentCount_simple.h5"
 
     def getImages():
@@ -45,11 +48,10 @@ activations = activation_model.predict(img_tensor)
 first_layer_activation = activations[0]
 
 import matplotlib.pyplot as plt
+for x in range(64):
+    plt.matshow(first_layer_activation[0, :, :,x], cmap='viridis')
 
-plt.matshow(first_layer_activation[0, :, :,4], cmap='viridis')
-plt.show()
-
-
-
-
+    save_path = os.path.join(Global.dir_path,ntpath.basename(sample_image_path))
+    print(save_path)
+    plt.savefig(save_path)
 
