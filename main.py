@@ -1,10 +1,11 @@
 from keras.models import load_model
 
 class Global:
-    sentiment_model_path = "/Users/ccrowe/Documents/Thesis/facebook_api/Notebooks/Image_CNN/getSentiment.h5"
-    pathToImages = "/Users/ccrowe/Documents/Thesis/facebook_api/Notebooks/Image_CNN/images"
+    sentiment_model_path = "/Users/ccrowe/Documents/Thesis/facebook_api/Notebooks/Image_CNN/getCommentCount_simple.h5"
+
     def getImages():
-        imagePathData = next(os.walk(Global.pathToImages))
+        pathToImages = "/Users/ccrowe/Documents/Thesis/facebook_api/Notebooks/Image_CNN/images"
+        imagePathData = next(os.walk(pathToImages))
         root = imagePathData[0]
         all_files = imagePathData[2]
         files_full_path = list(map(lambda x: os.path.join(root, x), all_files))
@@ -13,7 +14,7 @@ class Global:
 
 def getModel():
     model = load_model(Global.sentiment_model_path)
-
+    return model
 class CNN:
     model = getModel()
 
@@ -21,11 +22,10 @@ class CNN:
 sample_image_path = Global.images[0]
 print(sample_image_path)
 
-
 from keras.preprocessing import image
 import numpy as np
 
-img = image.load_img(sample_image_path, target_size=(200,200))
+img = image.load_img(sample_image_path, target_size=(64,64))
 img_tensor = image.img_to_array(img)
 img_tensor = np.expand_dims(img_tensor, axis=0)
 img_tensor /= 255.
@@ -37,8 +37,8 @@ import matplotlib.pyplot as plt
 
 from keras import models
 
-layer_outputs = [layer.get_output_at(1) for layer in model.layers[0:1]]
-activation_model = models.Model(inputs=model.input, outputs=layer_outputs)
+layer_outputs = [layer.output for layer in CNN.model.layers]
+activation_model = models.Model(inputs=CNN.model.input, outputs=layer_outputs)
 
 
 activations = activation_model.predict(img_tensor)
@@ -46,7 +46,7 @@ first_layer_activation = activations[0]
 
 import matplotlib.pyplot as plt
 
-plt.matshow(activations[0, :, :,:], cmap='viridis')
+plt.matshow(first_layer_activation[0, :, :,4], cmap='viridis')
 plt.show()
 
 
