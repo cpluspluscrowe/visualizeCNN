@@ -41,7 +41,7 @@ activation_model = models.Model(inputs=CNN.model.input, outputs=layer_outputs)
 
 
 activations = activation_model.predict(img_tensor)
-for activation_layer_index in range(len(activations)):
+for activation_layer_index in range(2):#range(len(activations)):
     activation_layer = activations[activation_layer_index]
     import matplotlib.pyplot as plt
     for x in range(activation_layer.shape[3]):
@@ -51,3 +51,21 @@ for activation_layer_index in range(len(activations)):
         print(save_path)
         plt.savefig(save_path)
 
+
+
+import sys
+from PIL import Image
+images = map(Image.open, list(map(lambda x: os.path.join(Global.dir_path, x),filter(lambda x: "jpg" in x, os.listdir(Global.dir_path)))))
+widths, heights = zip(*(i.size for i in images))
+
+total_width = sum(widths)
+max_height = max(heights)
+
+new_im = Image.new('RGB', (total_width, max_height))
+
+x_offset = 0
+for im in images:
+  new_im.paste(im, (x_offset,0))
+  x_offset += im.size[0]
+
+new_im.save('test.jpg')
