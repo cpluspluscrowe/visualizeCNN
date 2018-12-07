@@ -41,13 +41,13 @@ activation_model = models.Model(inputs=CNN.model.input, outputs=layer_outputs)
 
 
 activations = activation_model.predict(img_tensor)
-first_layer_activation = activations[0]
+for activation_layer_index in range(len(activations)):
+    activation_layer = activations[activation_layer_index]
+    import matplotlib.pyplot as plt
+    for x in range(activation_layer.shape[3]):
+        plt.matshow(activation_layer[0, :, :,x], cmap='viridis')
 
-import matplotlib.pyplot as plt
-for x in range(64):
-    plt.matshow(first_layer_activation[0, :, :,x], cmap='viridis')
-
-    save_path = os.path.join(Global.dir_path,str(x) + ntpath.basename(sample_image_path))
-    print(save_path)
-    plt.savefig(save_path)
+        save_path = os.path.join(Global.dir_path,str(activation_layer_index) + "-" + str(x) + "-" + ntpath.basename(sample_image_path))
+        print(save_path)
+        plt.savefig(save_path)
 
