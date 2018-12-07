@@ -21,7 +21,7 @@ def getModel():
 class CNN:
     model = getModel()
 
-sample_image_path = os.path.join(Global.dir_path,"magie_hall.jpg") #Global.images[0]
+sample_image_path = os.path.join(Global.dir_path,"magie_hall.jpeg") #Global.images[0]
 print(sample_image_path)
 
 from keras.preprocessing import image
